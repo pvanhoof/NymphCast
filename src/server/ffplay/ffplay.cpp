@@ -634,6 +634,14 @@ void Ffplay::run() {
         }
     }
 
+    if (!file_iformat) {
+        file_iformat = av_find_input_format(input_filename);
+        if (!file_iformat) {
+            av_log(NULL, AV_LOG_FATAL, "Unknown input format: %s\n", input_filename);
+            do_exit(NULL);
+        }
+    }
+
     is = StreamHandler::stream_open(input_filename, file_iformat, formatContext);
     if (!is) {
         av_log(NULL, AV_LOG_FATAL, "Failed to initialize VideoState!\n");
